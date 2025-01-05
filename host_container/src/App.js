@@ -8,6 +8,7 @@ const remotes = {
   panel_two: lazy(() => import('./components/PanelTwoApp')),
   panel_three: lazy(() => import('./components/PanelThreeApp')),
   panel_four: lazy(() => import('./components/PanelFourApp')),
+  panel_login: lazy(() => import('./components/PanelLogin')),
 };
 
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
@@ -51,9 +52,8 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
   );
 };
 
-
 const App = () => {
-  const [activeRemotes, setActiveRemotes] = useState([]);
+  const [activeRemotes, setActiveRemotes] = useState(null);
 
   const getAvaRemotes = async () => {
     let availableRemotes = [];
@@ -62,6 +62,7 @@ const App = () => {
       panel_two: 'http://localhost:8082/remoteEntry.js',
       panel_three: 'http://localhost:8083/remoteEntry.js',
       panel_four: 'http://localhost:8084/remoteEntry.js',
+      panel_login: 'http://localhost:8085/remoteEntry.js',
     };
   
     const promises = Object.entries(allRemotes).map(async ([key, url]) => {
@@ -80,8 +81,9 @@ const App = () => {
       }
     });
     await Promise.all(promises);
-    setActiveRemotes([...availableRemotes]);
-    return availableRemotes;
+    // setActiveRemotes([...availableRemotes]);
+    setActiveRemotes(new Set([...availableRemotes]));
+    // return availableRemotes;
   };
 
   useEffect(()=>{
@@ -92,7 +94,7 @@ const App = () => {
     <div className='homeMainCon'>
       <h1>Host Application</h1>
       {Object.entries(remotes).map(([key, Component]) => (
-        activeRemotes.includes(key) ? 
+        activeRemotes !== null && activeRemotes.has(key) ? 
         <ErrorBoundary
           key={key}
           FallbackComponent={ErrorFallback} 

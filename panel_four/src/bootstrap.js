@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client'; // Correct import for createRoot
+import ReactDOM from 'react-dom/client';
 import App from './App';
 
 const mount = (el) => {
@@ -7,7 +7,6 @@ const mount = (el) => {
     throw new Error("No DOM element provided to mount the React application.");
   }
 
-  // Use createRoot to render the application
   const root = ReactDOM.createRoot(el);
   root.render(
     <React.StrictMode>
@@ -15,7 +14,6 @@ const mount = (el) => {
     </React.StrictMode>
   );
 
-  // Return root for unmounting if needed later
   return root;
 };
 
@@ -28,5 +26,4 @@ if (process.env.NODE_ENV === 'development') {
   }
 }
 
-// Export the mount function for container usage
 export { mount };
