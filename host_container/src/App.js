@@ -1,117 +1,69 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
-import BlankPanel from './components/BlankPanel';
-import { ErrorBoundary } from 'react-error-boundary';
+import React, { useEffect } from 'react';
+import { useAtom } from "jotai";
 import "./styles/home.css";
+// import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
-const remotes = {
-  panel_one:  lazy(() => import('./components/PanelOneApp')),
-  panel_two: lazy(() => import('./components/PanelTwoApp')),
-  panel_three: lazy(() => import('./components/PanelThreeApp')),
-  panel_four: lazy(() => import('./components/PanelFourApp')),
-  panel_login: lazy(() => import('./components/PanelLogin')),
-};
-
-const ErrorFallback = ({ error, resetErrorBoundary }) => {
-  const extractErrorDetails = (stack) => {
-    if (!stack) return null;
-
-    const stackLines = stack.split("\n");
-    const relevantLine = stackLines.find((line) =>
-      line.includes("http") || line.includes("webpack")
-    );
-
-    if (relevantLine) {
-      const match = relevantLine.match(/(http.*):(\d+):(\d+)/);
-      if (match) {
-        const [_, file, line, column] = match; // Extract file, line, and column
-        return { file, line, column };
-      }
-    }
-    return null;
-  };
-
-  const details = extractErrorDetails(error.stack);
-  // console.log(error.stack)
-
-  return (
-    <div role="alert">
-      <h2>Something went wrong</h2>
-      {/* <p>{error.message}</p> */}
-      {details &&
-        <div>
-          <p>
-            File: {details.file}
-          </p>
-          <p>
-            Line: {details.line}, Column: {details.column}
-          </p>
-        </div>
-      }
-      {/* <button onClick={resetErrorBoundary}>Try Again</button> */}
-    </div>
-  );
-};
+import { getAvailableRemotes } from './apis/hostContainerApis';
+import { pageDetails, remotesData } from './store/globalStates';
+import { RemoteComponent } from './components/RemoteComponent';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import LandingPage from './components/LandingPage';
+import Dashboard from './components/Dashboard';
 
 const App = () => {
-  const [activeRemotes, setActiveRemotes] = useState(null);
+  const [, setData] = useAtom(remotesData);
+  const [details, setDetails] = useAtom(pageDetails);
+  const {isLoggedIn} = details;
 
-  const getAvaRemotes = async () => {
-    let availableRemotes = [];
-    const allRemotes = {
-      panel_one: 'http://localhost:8081/remoteEntry.js',
-      panel_two: 'http://localhost:8082/remoteEntry.js',
-      panel_three: 'http://localhost:8083/remoteEntry.js',
-      panel_four: 'http://localhost:8084/remoteEntry.js',
-      panel_login: 'http://localhost:8085/remoteEntry.js',
-    };
-  
-    const promises = Object.entries(allRemotes).map(async ([key, url]) => {
-      try {
-        await fetch(url, { method: 'HEAD' })
-        .then((response) => {
-          if(response) {
-            availableRemotes = [...availableRemotes, key]
-          };
-        })
-        .catch((error) => {
-          console.warn(`Remote ${key} not available: ${error}`);
-        })
-      } catch {
-        console.warn(`Remote not available: ${key} at ${url}`);
-      }
-    });
-    await Promise.all(promises);
-    // setActiveRemotes([...availableRemotes]);
-    setActiveRemotes(new Set([...availableRemotes]));
-    // return availableRemotes;
+  const onUpdateData = (key, value) => {
+    setData(prev => ({ ...prev, [key]: value }));
   };
 
-  useEffect(()=>{
-    getAvaRemotes();
-  },[]);
+  useEffect(() => {
+    getAvailableRemotes(onUpdateData);
+  }, []);
 
   return (
-    <div className='homeMainCon'>
-      <h1>Host Application</h1>
-      {Object.entries(remotes).map(([key, Component]) => (
-        activeRemotes !== null && activeRemotes.has(key) ? 
-        <ErrorBoundary
-          key={key}
-          FallbackComponent={ErrorFallback} 
-          onReset={() => {
-            // Optional: reset state or perform other actions on retry
-            console.log('Resetting error boundary');
-          }}
-        >
-          <Suspense fallback={<div>Loading {key.replace('_', ' ')}...</div>}>
-            <Component />
-          </Suspense>
-        </ErrorBoundary>
-        :
-        <BlankPanel panel={key.replace('_', ' ')} />
-      ))}
-    </div>
+      <div className='homeMainCon'>
+        <Header />
+        {isLoggedIn ?
+          <Dashboard />
+          :
+          <LandingPage/>
+        }
+
+        {false &&
+        <>
+          <RemoteComponent key="panel_one_c" keyName="panel_one" />
+          <RemoteComponent key="panel_two_c" keyName="panel_two" />
+          <RemoteComponent key="panel_three_c" keyName="panel_three" />
+          <RemoteComponent key="panel_four_c" keyName="panel_four" />
+          <RemoteComponent key="panel_login_c" keyName="panel_login" />
+          </>
+        }
+        <Footer />
+      </div>
   );
 };
 
 export default App;
+
+
+
+        {/* <nav style={{  gap: "20px" }}>
+          <Link to="/">Home</Link>
+          <Link to="/nurse">nurse</Link>
+          <Link to="/physician">physician</Link>
+          <Link to="/admin">admin</Link>
+          <Link to="/login">login</Link>
+        </nav> */}
+        {/* <Router>
+          <Routes>
+            <Route path="/" element={<RemoteComponent key="panel_one_c" keyName="panel_one" />} />
+            <Route path="/nurse" element={<RemoteComponent key="panel_two_c" keyName="panel_two" />} />
+            <Route path="/physician" element={<RemoteComponent key="panel_three_c" keyName="panel_three" />} />
+            <Route path="/admin" element={<RemoteComponent key="panel_four_c" keyName="panel_four" />} />
+            <Route path="/login" element={<RemoteComponent key="panel_login_c" keyName="panel_login" />} />
+          </Routes>
+        </Router> */}

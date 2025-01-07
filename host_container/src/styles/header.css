@@ -1,0 +1,33 @@
+.headerMainCon{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: rgb(92, 92, 242);
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 50px;
+}
+
+.headerLogo{
+    height: 30px;
+    width: 30px;
+}
+
+.loginBtn{
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    gap:4px;
+    cursor: pointer;
+    border: none;
+}
+
+.loginBtn svg{
+    height: 24px;
+    width: 24px;
+}
