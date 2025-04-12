@@ -9,4 +9,14 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.homeMainContentBlock{
+    width: 100%;
+    padding-top: 50px;
+    /* height: 100vh; */
+    min-height: calc(100vh - 50px);
+    overflow-y: auto;
 }

@@ -14,7 +14,7 @@ import Dashboard from './components/Dashboard';
 const App = () => {
   const [, setData] = useAtom(remotesData);
   const [details, setDetails] = useAtom(pageDetails);
-  const {isLoggedIn} = details;
+  const {isLoggedIn, currentPage} = details;
 
   const onUpdateData = (key, value) => {
     setData(prev => ({ ...prev, [key]: value }));
@@ -27,21 +27,37 @@ const App = () => {
   return (
       <div className='homeMainCon'>
         <Header />
-        {isLoggedIn ?
-          <Dashboard />
-          :
-          <LandingPage/>
-        }
-
-        {false &&
-        <>
-          <RemoteComponent key="panel_one_c" keyName="panel_one" />
-          <RemoteComponent key="panel_two_c" keyName="panel_two" />
-          <RemoteComponent key="panel_three_c" keyName="panel_three" />
-          <RemoteComponent key="panel_four_c" keyName="panel_four" />
-          <RemoteComponent key="panel_login_c" keyName="panel_login" />
+        <div className='homeMainContentBlock'>
+          {currentPage === "" &&
+          <>
+          {isLoggedIn ?
+            <Dashboard />
+            :
+            <LandingPage/>
+          }
           </>
-        }
+          }
+
+          {currentPage === "panel_login" &&
+          <RemoteComponent key="panel_login_c" keyName="panel_login" />
+          }
+
+          {currentPage === "panel_one" &&
+          <RemoteComponent key="panel_one_c" keyName="panel_one" />
+          }
+
+          {currentPage === "panel_two" &&
+          <RemoteComponent key="panel_two_c" keyName="panel_two" />
+          }
+
+          {currentPage === "panel_three" &&
+          <RemoteComponent key="panel_three_c" keyName="panel_three" />
+          }
+
+          {currentPage === "panel_four" &&
+          <RemoteComponent key="panel_four_c" keyName="panel_four" />
+          }
+        </div>
         <Footer />
       </div>
   );

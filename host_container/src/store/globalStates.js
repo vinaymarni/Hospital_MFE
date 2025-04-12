@@ -6,6 +6,7 @@ const initailremotesData = {
 
 const initailPageDetails = {
     isLoggedIn: false,
+    currentPage: "",
 };
 
 export const remotesData = atom(initailremotesData);

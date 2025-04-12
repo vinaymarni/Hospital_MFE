@@ -3,4 +3,74 @@
     flex-direction: column;
     width: 100%;
     height: calc(100vh - 50px);
+    font-family: montserrat;
+}
+
+button a{
+    cursor: pointer;
+}
+
+.landingPageFirstBlock{
+    display: flex;
+    width: 100%;
+    gap: 2%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2%;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.landingPageLeftSidePart{
+    width: 56%;
+
+    h1{
+        font-size: 62px;
+        padding-bottom: 24px;
+        font-family: montserratx;
+    }
+
+    p{
+        font-size: 24px;
+        padding-bottom: 16px;
+    }
+}
+
+.landingPageRightSidePart{
+    width: 40%;
+    height: 400px;
+    background-color: antiquewhite;
+    border-radius: 10px;
+}
+
+.appointmentBtn{
+    border: none;
+    border-radius: 4px;
+    color: white;
+    background-color: #000080;
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.TabsBlockMainCon{
+    background-color: #000080;
+    padding: 2%;
+    width: 100%;
+    display: flex;
+    gap:20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tabCard{
+    color: #000080;
+    padding: 16px;
+    font-size: 20px;
+    background-color: white;
+    border-radius: 10px;
+    width: 20%;
 }

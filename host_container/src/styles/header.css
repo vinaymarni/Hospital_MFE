@@ -4,10 +4,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background-color: rgb(92, 92, 242);
+    background-color: #000080;
     padding-left: 20px;
     padding-right: 20px;
     height: 50px;
+    /* background: linear-gradient(to right, #000080, rgb(204, 204, 233), #000080); */
+    position: fixed;
+    top:0;
 }
 
 .headerLogo{
@@ -16,18 +19,20 @@
 }
 
 .loginBtn{
-    border-radius: 20px;
     display: flex;
     align-items: center;
-    padding: 4px;
     font-size: 18px;
     font-weight: 600;
     gap:4px;
     cursor: pointer;
     border: none;
+    background-color: transparent;
+    color: white;
+    justify-content: row-reverse;
+
 }
 
 .loginBtn svg{
-    height: 24px;
-    width: 24px;
+    height: 22px;
+    width: 22px;
 }
